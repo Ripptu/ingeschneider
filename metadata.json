@@ -1,0 +1,6 @@
+{
+  "name": "Lumina",
+  "description": "Erlesenes Seelencoaching, systemische Heilarbeit und energetische Transformation mit Inge Schneider.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
