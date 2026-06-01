@@ -289,6 +289,25 @@ export default function App() {
   const [newIntentionColor, setNewIntentionColor] = useState<'amber' | 'violet' | 'cyan' | 'rose'>("amber");
   const [isAddingIntention, setIsAddingIntention] = useState<boolean>(false);
 
+  // States specifically for the new "Herz-Licht Portal" Herzöffnung und Leben
+  const [heartOpeningActive, setHeartOpeningActive] = useState<boolean>(false);
+  const [heartInhaleState, setHeartInhaleState] = useState<'inhale' | 'exhale' | 'hold'>('inhale');
+
+  // Custom breathing cycle effect for "Herz-Licht"
+  useEffect(() => {
+    if (!heartOpeningActive) return;
+    
+    let cycle = 0;
+    const interval = setInterval(() => {
+      cycle = (cycle + 1) % 3;
+      if (cycle === 0) setHeartInhaleState('inhale');
+      else if (cycle === 1) setHeartInhaleState('hold');
+      else setHeartInhaleState('exhale');
+    }, 4000); // 4s inhale, 4s hold, 4s exhale
+    
+    return () => clearInterval(interval);
+  }, [heartOpeningActive]);
+
   // Floating animation effect for Digitaler Altar
   useEffect(() => {
     const interval = setInterval(() => {
@@ -468,12 +487,24 @@ export default function App() {
   const currentHzInfo = SOLFEGGIO_FREQUENCIES.find(f => f.hz === selectedHz) || SOLFEGGIO_FREQUENCIES[1];
 
   return (
-    <main className="relative w-full min-h-screen overflow-x-hidden flex flex-col items-center font-sans selection:bg-white/20 selection:text-white text-white bg-neutral-950">
+    <main className="relative w-full min-h-screen overflow-x-hidden flex flex-col items-center font-sans selection:bg-rose-500/30 selection:text-white text-white bg-gradient-to-tr from-[#1b0833] via-[#0b001a] to-[#400527]">
       
+      {/* Dynamic Luminous Aura Spheres representing Inge's "Licht & Liebe" spectrum */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-[0] opacity-80">
+        {/* Glowing Magenta Heart Aura representing Herzöffnung */}
+        <div className="absolute top-[15%] left-[-10%] w-[450px] h-[450px] rounded-full bg-rose-500/20 blur-[120px] animate-pulse" style={{ animationDuration: '6s' }} />
+        {/* Warm Golden Solar Aura representing Solare Urkraft */}
+        <div className="absolute top-[40%] right-[-10%] w-[500px] h-[500px] rounded-full bg-amber-500/15 blur-[140px] animate-pulse" style={{ animationDuration: '9s' }} />
+        {/* Soft Violet Soul Aura representing Feinstofflichkeit */}
+        <div className="absolute bottom-[20%] right-[10%] w-[550px] h-[550px] rounded-full bg-purple-600/25 blur-[130px] animate-pulse" style={{ animationDuration: '11s' }} />
+        {/* Ethereal Aquamarine Grace representing Klarheit & Seelenfrieden */}
+        <div className="absolute bottom-[2%] left-[5%] w-[400px] h-[400px] rounded-full bg-cyan-500/20 blur-[110px] animate-pulse" style={{ animationDuration: '8s' }} />
+      </div>
+
       {/* 1. Immersive Fixed Background Video */}
       <video 
         id="bg-video"
-        className="fixed inset-0 w-full h-full object-cover z-[0] opacity-80 mix-blend-screen"
+        className="fixed inset-0 w-full h-full object-cover z-[0] opacity-70 mix-blend-screen"
         autoPlay 
         loop 
         muted 
@@ -486,9 +517,9 @@ export default function App() {
         Your browser does not support the video tag.
       </video>
 
-      {/* Luxury dark vignette overlay to ensure text is beautifully readable */}
-      <div className="fixed inset-0 bg-radial from-transparent via-neutral-950/70 to-neutral-950/95 pointer-events-none z-[1]" />
-      <div className="fixed inset-0 bg-gradient-to-b from-neutral-950/40 via-transparent to-neutral-950/90 pointer-events-none z-[1]" />
+      {/* High-luminosity atmospheric vignette overlay to let colors pop while keeping text legible */}
+      <div className="fixed inset-0 bg-radial from-transparent via-[#06000f]/15 to-[#06000f]/85 pointer-events-none z-[1]" />
+      <div className="fixed inset-0 bg-gradient-to-b from-[#0b001a]/30 via-transparent to-[#0b001a]/75 pointer-events-none z-[1]" />
 
       {/* Floating Solfeggio indicator on the top-right margins */}
       <div className="fixed bottom-6 right-6 z-40 hidden md:flex items-center gap-3 bg-neutral-950/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-xs">
@@ -521,6 +552,7 @@ export default function App() {
           <div className="hidden md:flex items-center gap-8">
             {[
               { id: "philosophie", label: "Philosophie" },
+              { id: "herz-licht", label: "Herz-Licht" },
               { id: "interactive-space", label: "Energie-Tuner" },
               { id: "mentorings", label: "Mentorings" },
               { id: "testimonials", label: "Erfahrungen" }
@@ -537,7 +569,7 @@ export default function App() {
                 {activeTab === tab.id && (
                   <motion.div 
                     layoutId="navbar-underline"
-                    className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-amber-200/80"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-rose-400 via-fuchsia-300 to-amber-200"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -716,6 +748,276 @@ export default function App() {
                   <span className="text-[11px] uppercase tracking-wider text-white/70">500+ Seelen geführt</span>
                 </div>
               </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ================= 5. DATENTRÄGER DER LIEBE: HERZ-LICHT PORTAL ================= */}
+        <section id="herz-licht" className="scroll-mt-24 space-y-12">
+          
+          <div className="text-center space-y-4 max-w-xl mx-auto">
+            <span className="text-xs uppercase tracking-[0.3em] text-fuchsia-300 font-semibold block bg-gradient-to-r from-fuchsia-400 via-rose-300 to-amber-200 bg-clip-text text-transparent">PULS DER REINEN ESSENZ</span>
+            <h2 className="text-3xl md:text-5xl font-light tracking-tight text-white animate-fade-in">Herz-Licht & Lebensfluss</h2>
+            <p className="text-white/70 text-xs md:text-sm font-light leading-relaxed">
+              Die Herzöffnung ist der stärkste alchemistische Frequenzwechsel deines Seins. Berühre das pulsierende Herz-Licht, um dich mit der Frequenz der allumfassenden Liebe und lebendigen Schöpfung auszurichten.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center pt-4">
+            
+            {/* Ambient Heart Graphic Container (6 cols) */}
+            <div className="md:col-span-6 relative flex flex-col items-center justify-center min-h-[400px] rounded-3xl p-6 bg-gradient-to-b from-purple-950/20 via-rose-950/15 to-neutral-900/10 border border-white/5 overflow-hidden shadow-2xl group">
+              
+              {/* Vibrant neon heart nebula backdrop inside the card matching attachment */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-fuchsia-500/[0.08] via-purple-600/[0.05] to-transparent pointer-events-none" />
+              
+              {/* Magic rotating particle ring representing the heart-light orbit */}
+              <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                className="absolute w-[280px] h-[280px] rounded-full border border-dashed border-rose-500/15"
+              />
+              <motion.div 
+                animate={{ rotate: -360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="absolute w-[220px] h-[220px] rounded-full border border-dashed border-cyan-500/10"
+              />
+
+              {/* The Interactive Sacred Heart SVG */}
+              <div className="relative z-10 cursor-pointer select-none" onClick={() => {
+                setHeartOpeningActive(!heartOpeningActive);
+                // Set the audio tuner to 639 Hz (Heart Chakra frequency)
+                setSelectedHz(639);
+                // Start playing if enabled
+                if (audioEnabled) {
+                  setPlayingState(true);
+                }
+              }}>
+                {/* Outermost pulsing neon aura glow border inside heart shape */}
+                <motion.div
+                  animate={{
+                    scale: heartOpeningActive ? [1, 1.1, 1] : [1, 1.05, 1],
+                    opacity: [0.8, 1, 0.8],
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: heartOpeningActive ? 1.5 : 2.5,
+                    ease: "easeInOut"
+                  }}
+                  className="relative w-72 h-72 flex items-center justify-center"
+                >
+                  {/* Glowing SVG representation of the double cosmic heart (as seen in image) */}
+                  <svg 
+                    width="260" 
+                    height="260" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="filter drop-shadow-[0_0_20px_rgba(244,63,94,0.6)]"
+                  >
+                    <defs>
+                      <linearGradient id="cosmicHeartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#ec4899" />
+                        <stop offset="35%" stopColor="#a855f7" />
+                        <stop offset="70%" stopColor="#06b6d4" />
+                        <stop offset="100%" stopColor="#f59e0b" />
+                      </linearGradient>
+                      <radialGradient id="sunBurst" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stopColor="#fff" />
+                        <stop offset="40%" stopColor="#fef08a" />
+                        <stop offset="70%" stopColor="#fbbf24" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="#fbbf24" stopOpacity="0" />
+                      </radialGradient>
+                    </defs>
+
+                    {/* Outer Neon Heart Layer */}
+                    <path 
+                      d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" 
+                      fill="url(#cosmicHeartGrad)" 
+                      opacity="0.85"
+                    />
+
+                    {/* Inner Neon Ring Outline */}
+                    <path 
+                      d="M12 18.35l-.75-.68C6.4 13.36 3.5 10.28 3.5 7.5c0-2.22 1.78-4 4-4 1.44 0 2.81.71 3.7 1.89C12.09 4.21 13.46 3.5 14.9 3.5c2.22 0 4 1.78 4 4 0 2.78-2.9 5.86-7.75 10.17l-.65.68z" 
+                      stroke="#ffffff" 
+                      strokeWidth="0.45"
+                      strokeDasharray="2,2"
+                      opacity="0.75"
+                    />
+
+                    {/* Highly detailed middle heart (nested) for dimensional depth */}
+                    <path 
+                      d="M12 16.5l-.45-.4C8.2 12.7 6 10.5 6 8.2c0-1.5 1-2.5 2.5-2.5 1.1 0 2.1.6 2.7 1.6l.8.9.8-.9c.6-1 1.6-1.6 2.7-1.6 1.5 0 2.5 1 2.5 2.5 0 2.3-2.2 4.5-5.55 7.9L12 16.5z" 
+                      fill="#811550" 
+                      opacity="0.4"
+                    />
+
+                    {/* Central Gold Sun Flare burst representing 'Herz-Licht' */}
+                    <circle cx="12" cy="9.2" r="3.2" fill="url(#sunBurst)" />
+                  </svg>
+
+                  {/* Pulsating text label absolutely centered inside the heart */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-1">
+                    <span className="font-serif text-sm tracking-[0.15em] text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] font-semibold select-none bg-black/10 px-1.5 py-0.5 rounded-lg">
+                      Herz-Licht
+                    </span>
+                    <span className="text-[7.5px] font-mono tracking-widest text-[#f59e0b] bg-black/55 px-2 py-0.5 rounded-full uppercase border border-[#fbbf24]/20 animate-pulse mt-1">
+                      {heartOpeningActive ? 'AKTIV' : 'BERÜHREN'}
+                    </span>
+                  </div>
+                </motion.div>
+                
+                {/* Floating sparkling stars around the heart representing high vibrations */}
+                <motion.div 
+                  animate={{ y: [0, -10, 0], opacity: [0.5, 1, 0.5] }}
+                  transition={{ repeat: Infinity, duration: 2, delay: 0.1 }}
+                  className="absolute top-10 left-8 text-fuchsia-300"
+                >
+                  <Sparkles className="w-4 h-4" />
+                </motion.div>
+                <motion.div 
+                  animate={{ y: [0, -12, 0], opacity: [0.6, 1, 0.6] }}
+                  transition={{ repeat: Infinity, duration: 2.4, delay: 0.5 }}
+                  className="absolute bottom-8 right-6 text-amber-300"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                </motion.div>
+                <motion.div 
+                  animate={{ x: [0, 8, 0], opacity: [0.4, 0.9, 0.4] }}
+                  transition={{ repeat: Infinity, duration: 2.8, delay: 0.8 }}
+                  className="absolute top-14 right-10 text-cyan-300"
+                >
+                  <Sparkles className="w-4 h-4" />
+                </motion.div>
+              </div>
+
+              {/* Bottom bar notification inside Heart widget */}
+              <div className="text-center text-[10px] text-white/50 font-mono tracking-wider pt-4 z-10">
+                <span>RESONANZ-STATUS: {heartOpeningActive ? '639 HZ HERZWELLEN AKTIV' : 'KRAFTFELDBEREIT'}</span>
+              </div>
+
+            </div>
+
+            {/* Interactive Meditation and Guidance Side (6 cols) */}
+            <div className="md:col-span-6 space-y-6">
+              
+              <div className="liquid-glass rounded-3xl p-6 md:p-8 space-y-6 bg-black/25 border border-white/5 relative">
+                
+                <div className="flex items-center gap-2">
+                  <Heart className="w-4 h-4 text-rose-300 animate-pulse" />
+                  <h3 className="text-xs uppercase tracking-widest text-white/90 font-semibold font-mono">
+                    {heartOpeningActive ? 'GEFÜHRTER HERZÖFFNUNGSPROZESS' : 'DIE INITIATION DES HERZENS'}
+                  </h3>
+                </div>
+
+                <AnimatePresence mode="wait">
+                  {!heartOpeningActive ? (
+                    <motion.div
+                      key="idle"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="space-y-4"
+                    >
+                      <p className="text-xs text-white/70 leading-relaxed font-light">
+                        Der Weg des Lebens führt unausweichlich durch das Herz. Schmerz, Enttäuschungen und Alltagsstress errichten Barrieren um unser feinstoffliches Herzchakra. Dadurch blockiert der Fluss der Lebenskraft.
+                      </p>
+                      <p className="text-xs text-white/75 leading-relaxed font-light">
+                        <strong>Berühre links das Herz-Licht</strong>, um die goldene Heilschwingung (639 Hz) freizusetzen. Es beginnt ein sanfter, geführter Atem-Rhythmus, um das Urvertrauen in deine Seele fließen zu lassen.
+                      </p>
+                      <div className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl border-l-2 border-l-rose-500/50">
+                        <span className="text-[10px] font-mono tracking-wider uppercase text-rose-300 block mb-1">Mantra der Herzöffnung</span>
+                        <p className="text-[11px] text-white/70 italic font-light">
+                          „Ich lasse alle schützenden Barrieren sanft schmelzen. Mein Herz-Licht dehnt sich aus. Ich darf leben und vollkommen empfangen.“
+                        </p>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="active"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="space-y-5 text-left"
+                    >
+                      {/* Interactive Visual Breath Trainer */}
+                      <div className="flex flex-col items-center justify-center p-6 bg-gradient-to-tr from-rose-950/20 to-purple-950/30 rounded-2xl border border-rose-500/10 relative overflow-hidden">
+                        
+                        {/* Elegant Pulsating Circle */}
+                        <motion.div 
+                          animate={{
+                            scale: heartInhaleState === 'inhale' ? [1, 1.45] : heartInhaleState === 'hold' ? 1.45 : [1.45, 1],
+                          }}
+                          transition={{ duration: 4, ease: "easeInOut" }}
+                          className={`w-14 h-14 rounded-full border border-rose-400/40 absolute blur-[1px] ${
+                            heartInhaleState === 'inhale' ? 'bg-rose-500/10' : heartInhaleState === 'hold' ? 'bg-purple-500/15' : 'bg-amber-500/5'
+                          }`}
+                        />
+
+                        <div className="relative z-10 text-center space-y-1">
+                          <span className="text-[10px] font-mono tracking-[0.25em] text-cyan-300 uppercase block">ATEM-LEITUNG</span>
+                          <span className="text-sm font-semibold tracking-wide text-white uppercase block">
+                            {heartInhaleState === 'inhale' && 'Atem EINströmen lassen'}
+                            {heartInhaleState === 'hold' && 'Energie IM Herzen halten'}
+                            {heartInhaleState === 'exhale' && 'Alte Schutzpanzer AUSatmen'}
+                          </span>
+                          <span className="text-[11px] text-white/60 block font-light">
+                            {heartInhaleState === 'inhale' && 'Visualisiere strahlend goldenes Licht...'}
+                            {heartInhaleState === 'hold' && 'Spüre die wohlige Wärme deines Lichtes'}
+                            {heartInhaleState === 'exhale' && 'Lethargie, Angst und Stress weichen'}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Ethereal customized wisdom teaching for heart opening */}
+                      <div className="space-y-3 pt-1">
+                        <h4 className="text-xs uppercase tracking-widest text-[#f59e0b] font-mono font-medium">LICHTKANAL-FREQUENZ: 639 HZ</h4>
+                        <p className="text-xs text-white/75 leading-relaxed font-light">
+                          Diese Solfeggio Schwingung harmonisiert deinen Gefühlskörper auf Zellebene. Sie löst Blockaden zu deinen Mitmenschen und fördert emotionale Klarheit, inneren Frieden sowie die Rückkehr zur bedingungslosen Schöpfer-Lebensfreude.
+                        </p>
+                      </div>
+
+                      {/* Micro interaction buttons */}
+                      <div className="flex gap-3 justify-start pt-2">
+                        <button 
+                          onClick={() => setHeartOpeningActive(false)}
+                          className="px-4 py-2 bg-white/5 hover:bg-white/10 text-[10px] font-mono uppercase tracking-widest text-white/60 hover:text-white rounded-xl transition-all border border-white/5"
+                        >
+                          Zentrierung beenden
+                        </button>
+                        
+                        {!audioEnabled && (
+                          <button
+                            onClick={() => {
+                              setAudioEnabled(true);
+                              setPlayingState(true);
+                            }}
+                            className="px-4 py-2 bg-rose-500/25 hover:bg-rose-500/35 text-[10px] font-mono uppercase tracking-widest text-rose-200 rounded-xl transition-all border border-rose-500/20"
+                          >
+                            Sound-Schwingung aktivieren
+                          </button>
+                        )}
+                      </div>
+
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+              </div>
+
+              {/* Heart Opening Testimonial / Inspiration Line */}
+              <div className="bg-white/[0.01] border border-white/5 rounded-3xl p-5 flex items-start gap-3.5">
+                <Sparkles className="w-5 h-5 text-amber-200 flex-shrink-0 mt-0.5 animate-pulse" />
+                <div className="space-y-1">
+                  <span className="text-[10px] font-mono tracking-widest text-white/40 uppercase block">ERKENNTNIS DES TAGES</span>
+                  <p className="text-xs text-white/65 font-light leading-relaxed">
+                    „Erst wenn wir das Herz-Licht zulassen, weiten wir unsere feinstofflichen Auren so weit, dass das Universum uns antworten kann. Leben bedeutet freier Fluss.“ – <span className="text-amber-200">Inge Schneider</span>
+                  </p>
+                </div>
+              </div>
+
             </div>
 
           </div>
